@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр заказов</title>
+</head>
+<body>
+<h1>Заказы</h1>
+    <form method="POST" action="admin/orders/search">
+    <fieldset>
+        <legend>Поиск заказа</legend>
+<label for="search_order">Введите последние четыре цифры заказа:</label>
+    <input type="text" id="search_order" name="search_order" th:value="*{value_order}">
+        <input type="submit" value="Найти">
+    </fieldset>
+</form>
+<h2>Результат поиска</h2>
+<div th:each="order : ${search_order}">
+    <h3 th:text="'Заказ №' + ${order.getNumber()}"></h3>
+    <img th:src="'/img/' + ${order.getProduct().getImageList()[0].getFileName()}" width="300px">
+    <p th:text="'Пользователь: ' + ${order.getPerson().getLogin()}">
+    <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}"></p>
+    <p th:text="'Количество: ' + ${order.getCount()}"></p>
+    <p th:text="'Цена: ' + ${order.getPrice()}"></p>
+    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+    <p th:text="'Cтатус: ' + ${order.getStatus()}"></p>
+</div>
+</hr>
+<h2>Все заказы</h2>
+<div th:each="order : ${orders}">
+    <h3 th:text="'Заказ №' + ${order.getNumber()}"></h3>
+    <img th:src="'/img/' + ${order.getProduct().getImageList()[0].getFileName()}" width="300px">
+    <p th:text="'Пользователь: ' + ${order.getPerson().getLogin()}">
+    <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}"></p>
+    <p th:text="'Количество: ' + ${order.getCount()}"></p>
+    <p th:text="'Цена: ' + ${order.getPrice()}"></p>
+    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+    <p th:text="'Cтатус: ' + ${order.getStatus()}"></p>
+    <a th:href="@{/admin/order/changeStatus/{id}(id=${order.getId()})}">Изменить статус заказа</a>
+</div>
+</body>
+</html>
